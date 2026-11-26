@@ -72,7 +72,7 @@ p{margin:0;max-width:62ch}
 .hero .kicker{font-family:var(--mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .hero .kicker b{color:var(--amber);font-weight:600}
 .hero .claim{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(30px,4.2vw,52px);line-height:.95;max-width:16ch;text-wrap:balance;animation:rise .9s .12s cubic-bezier(.2,.7,.2,1) both}
-.hero .claim span{color:var(--amber)}
+.hero .claim .hl{color:var(--amber)}
 .hero .cta{display:flex;flex-wrap:wrap;gap:12px;animation:rise .9s .24s cubic-bezier(.2,.7,.2,1) both}
 .hero .shot{position:relative;align-self:end;min-width:0}
 .hero .shot img{position:relative;z-index:1;width:100%;max-width:520px;margin-left:auto;height:auto;-webkit-mask-image:linear-gradient(#000 78%,transparent);mask-image:linear-gradient(#000 78%,transparent)}
@@ -289,7 +289,8 @@ body.has-cur,body.has-cur a,body.has-cur button{cursor:none}
 @keyframes aurora{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(4%,-3%) rotate(8deg)}100%{transform:translate(-5%,4%) rotate(-6deg)}}
 .hero-word{position:absolute;top:9%;left:0;display:flex;white-space:nowrap;pointer-events:none;will-change:transform;z-index:0}
 .hero-word span{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(130px,25vw,380px);line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(242,236,228,.09);padding-right:.25em}
-.hero canvas#spectrum{height:55%;animation:fadeIn 2.4s .5s both}
+.hero canvas#spectrum{height:42%;opacity:.42;animation:fadeIn 2.4s .5s both}
+@media (min-width:861px){.hero .shot img{max-height:calc(100svh - 120px);width:auto;margin:0 auto}}
 .hero .kicker{animation:fadeUp 1s .15s cubic-bezier(.16,1,.3,1) both}
 .hero .logo{animation:logoIn 1.6s .25s cubic-bezier(.16,1,.3,1) both;filter:drop-shadow(0 0 calc(30px + 60px*var(--beat)) rgba(255,122,26,calc(.18 + .45*var(--beat))))}
 .hero .claim{animation:none}
@@ -339,7 +340,7 @@ body.has-cur,body.has-cur a,body.has-cur button{cursor:none}
 .inter-txt small{font-family:var(--mono);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--amber)}
 .inter-txt b{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(76px,17vw,270px);line-height:.82;color:var(--bone);text-shadow:0 14px 70px rgba(0,0,0,.55)}
 .inter-txt b em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--amber)}
-.inter-txt span{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone)}
+.inter-txt>span{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--bone)}
 @media (max-width:760px){.inter{height:160vh}.inter-txt b em{-webkit-text-stroke:1.5px var(--amber)}}
 
 /* ---------- marquees gigantes entre seções ---------- */
@@ -406,7 +407,7 @@ body.has-cur,body.has-cur a,body.has-cur button{cursor:none}
     <div class="copy">
       <div class="kicker"><b>DJ</b> · Fundador da Brazuka House · Rio de Janeiro</div>
       <img class="logo" src="a/logo-taddei.webp" alt="TADDEI" width="1000" height="348">
-      <div class="claim">Do warm &amp; groove ao <span>peak time</span> com personalidade.</div>
+      <div class="claim">Do warm &amp; groove ao <span class="hl">peak time</span> com personalidade.</div>
       <div class="cta">
         <a class="btn" href="#contato">Contratar data</a>
         <a class="btn ghost" href="#ao-vivo">▶ Ver set ao vivo</a>
@@ -869,8 +870,11 @@ body.has-cur,body.has-cur a,body.has-cur button{cursor:none}
     if(el.classList.contains('ch')){ var tn=[].slice.call(el.childNodes).filter(function(n){return n.nodeType===3&&n.nodeValue.trim();}).pop(); if(tn){ var fin=tn.nodeValue; scramble(function(v){tn.nodeValue=v;}, fin); } }
     if(el.classList.contains('curve') && energy) energy.style.strokeDashoffset=0;
   }
-  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ onIn(e.target); io.unobserve(e.target); } }); },{rootMargin:'0px 0px -10% 0px',threshold:.12});
-  $$('.rv, .rv-img, .band h2.split, .brand-top h2.split').forEach(function(el){ io.observe(el); });
+  /* imagens recortadas ficam invisíveis para o observador: observa o pai delas */
+  var proxy=new Map();
+  var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ var t=e.target; if(proxy.has(t)) proxy.get(t).forEach(onIn); else onIn(t); io.unobserve(t); } }); },{rootMargin:'0px 0px -10% 0px',threshold:.05});
+  $$('.rv, .band h2.split').forEach(function(el){ io.observe(el); });
+  $$('.rv-img').forEach(function(el){ var p=el.parentNode; if(!proxy.has(p)){ proxy.set(p,[]); io.observe(p); } proxy.get(p).push(el); });
   var ioB=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('seen'); ioB.unobserve(e.target);} }); },{threshold:.08});
   $$('.band').forEach(function(b){ ioB.observe(b); });
 
