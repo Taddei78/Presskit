@@ -970,10 +970,12 @@ body.has-cur,body.has-cur a,body.has-cur button{cursor:none}
       if(dy>4 && y>vh*.7 && topShown){ top.classList.add('hide'); topShown=false; }
       else if(dy<-4 && !topShown){ top.classList.remove('hide'); topShown=true; }
 
-      if(y<vh*1.4){
+      if(y<vh*1.4 && vw>860){
         shot.style.translate='0 '+(y*.2).toFixed(1)+'px';
         copy.style.translate='0 '+(y*.38).toFixed(1)+'px';
         copy.style.opacity=clamp(1-y/(vh*.7),0,1).toFixed(3);
+      } else if(vw<=860 && copy.style.opacity){ copy.style.opacity=''; copy.style.translate=''; shot.style.translate=''; }
+      if(y<vh*1.4){
         if(hw&&hwW) hw.style.transform='translate3d('+(-((now*.035+y*.6)%hwW)).toFixed(1)+'px,'+(y*.15).toFixed(1)+'px,0)';
       }
       if(ticker) ticker.style.transform='skewY('+clamp(vel*.06,-2.5,2.5).toFixed(2)+'deg)';
