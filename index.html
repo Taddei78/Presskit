@@ -52,7 +52,9 @@ p{margin:0;max-width:62ch}
 /* ---------- top bar ---------- */
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:color-mix(in srgb,var(--ink) 82%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px}
-.top img{height:22px;width:auto}
+.top .home{display:block;line-height:0;flex-shrink:0}
+.top .home img{height:clamp(54px,7.5vw,81px);width:auto;transition:filter .3s,transform .5s cubic-bezier(.16,1,.3,1)}
+.top .home:hover img{transform:scale(1.04);filter:drop-shadow(0 0 14px rgba(255,122,26,.45))}
 .top nav{display:flex;gap:22px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
 .top nav a{text-decoration:none;color:var(--dim)}
 .top nav a:hover{color:var(--bone)}
@@ -285,14 +287,14 @@ body.has-cur,body.has-cur a,body.has-cur button{cursor:none}
 .btn{transition:translate .45s cubic-bezier(.16,1,.3,1),filter .2s,background .3s,color .3s,border-color .3s}
 
 /* ---------- hero full-screen ---------- */
-.hero{min-height:calc(100svh - 50px);display:flex;flex-direction:column;justify-content:flex-end}
+.hero{min-height:calc(100svh - 105px);display:flex;flex-direction:column;justify-content:flex-end}
 .hero>.wrap{width:100%}
 .hero::before{content:"";position:absolute;inset:-25%;pointer-events:none;background:radial-gradient(35% 35% at 72% 42%,rgba(255,122,26,.2),transparent 70%),radial-gradient(32% 32% at 18% 72%,rgba(76,107,255,.18),transparent 70%);opacity:calc(.65 + .5*var(--beat));animation:aurora 14s ease-in-out infinite alternate}
 @keyframes aurora{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(4%,-3%) rotate(8deg)}100%{transform:translate(-5%,4%) rotate(-6deg)}}
 .hero-word{position:absolute;top:9%;left:0;display:flex;white-space:nowrap;pointer-events:none;will-change:transform;z-index:0}
 .hero-word span{font-family:var(--display);font-weight:900;text-transform:uppercase;font-size:clamp(130px,25vw,380px);line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(242,236,228,.09);padding-right:.25em}
 .hero canvas#spectrum{height:42%;opacity:.42;animation:fadeIn 2.4s .5s both}
-@media (min-width:861px){.hero .shot img{max-height:calc(100svh - 120px);width:auto;margin:0 auto}}
+@media (min-width:861px){.hero .shot img{max-height:calc(100svh - 175px);width:auto;margin:0 auto}}
 .hero .kicker{animation:fadeUp 1s .15s cubic-bezier(.16,1,.3,1) both}
 .hero .logo{animation:logoIn 1.6s .25s cubic-bezier(.16,1,.3,1) both;filter:drop-shadow(0 0 calc(30px + 60px*var(--beat)) rgba(255,122,26,calc(.18 + .45*var(--beat))))}
 .hero .claim{animation:none}
@@ -393,7 +395,7 @@ body.has-cur,body.has-cur a,body.has-cur button{cursor:none}
 <div id="prog" aria-hidden="true"></div>
 <header class="top">
   <div class="wrap">
-    <img src="a/logo-bzk.webp" alt="BZK House" width="224" height="80">
+    <a class="home" href="https://brazukahouse.com/" aria-label="BZK House — ir para a loja"><img src="a/logo-bzk-hd.webp" alt="BZK House" width="220" height="81"></a>
     <nav aria-label="Seções">
       <a href="#sobre">Sobre</a><a href="#ao-vivo">Ao vivo</a><a href="#formatos">Formatos</a><a href="#marca">Brazuka House</a><a href="#contato">Contato</a>
     </nav>
